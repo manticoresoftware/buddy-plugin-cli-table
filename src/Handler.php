@@ -12,7 +12,7 @@
 namespace Manticoresearch\Buddy\Plugin\CliTable;
 
 use Manticoresearch\Buddy\Core\ManticoreSearch\Client as HTTPClient;
-use Manticoresearch\Buddy\Core\Plugin\FormattableClientQueryExecutor;
+use Manticoresearch\Buddy\Core\Plugin\BaseHandlerWithTableFormatter;
 use Manticoresearch\Buddy\Core\Plugin\TableFormatter;
 use Manticoresearch\Buddy\Core\Task\Task;
 use Manticoresearch\Buddy\Core\Task\TaskResult;
@@ -22,15 +22,15 @@ use parallel\Runtime;
 /**
  * This is the class to return response to the '/cli' endpoint in table format
  */
-final class Executor extends FormattableClientQueryExecutor {
+final class Handler extends BaseHandlerWithTableFormatter {
 
 	/**
 	 *  Initialize the executor
 	 *
-	 * @param Request $request
+	 * @param Payload $payload
 	 * @return void
 	 */
-	public function __construct(public Request $request) {
+	public function __construct(public Payload $payload) {
 	}
 
 	/**
@@ -40,16 +40,16 @@ final class Executor extends FormattableClientQueryExecutor {
 	 * @throws RuntimeException
 	 */
 	public function run(Runtime $runtime): Task {
-		$this->manticoreClient->setPath($this->request->path);
+		$this->manticoreClient->setPath($this->payload->path);
 		// We run in a thread anyway but in case if we need blocking
 		// We just waiting for a thread to be done
 		$taskFn = static function (
-			Request $request,
+			Payload $payload,
 			HTTPClient $manticoreClient,
 			?TableFormatter $tableFormatter
 		): TaskResult {
 			$time0 = hrtime(true);
-			$resp = $manticoreClient->sendRequest($request->query, null, true);
+			$resp = $manticoreClient->sendRequest($payload->query, null, true);
 			$data = null;
 			$total = -1;
 			$respBody = $resp->getBody();
@@ -73,7 +73,7 @@ final class Executor extends FormattableClientQueryExecutor {
 		return Task::createInRuntime(
 			$runtime,
 			$taskFn,
-			[$this->request, $this->manticoreClient, $this->tableFormatter]
+			[$this->payload, $this->manticoreClient, $this->tableFormatter]
 		)->run();
 	}
 }

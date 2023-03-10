@@ -12,21 +12,21 @@
 namespace Manticoresearch\Buddy\Plugin\CliTable;
 
 use Manticoresearch\Buddy\Core\ManticoreSearch\Endpoint as ManticoreEndpoint;
-use Manticoresearch\Buddy\Core\Network\Request as NetworkRequest;
-use Manticoresearch\Buddy\Core\Plugin\Request as BaseRequest;
+use Manticoresearch\Buddy\Core\Network\Request;
+use Manticoresearch\Buddy\Core\Plugin\BasePayload;
 
 /**
  * Request for CliTable command
  */
-final class Request extends BaseRequest {
+final class Payload extends BasePayload {
 	public string $query;
 	public string $path;
 
 	/**
-	 * @param NetworkRequest $request
+	 * @param Request $request
 	 * @return static
 	 */
-	public static function fromNetworkRequest(NetworkRequest $request): static {
+	public static function fromRequest(Request $request): static {
 		$self = new static();
 		$self->query = $request->payload;
 		$self->path = ManticoreEndpoint::Sql->value;
@@ -34,10 +34,10 @@ final class Request extends BaseRequest {
 	}
 
 	/**
-	 * @param NetworkRequest $request
+	 * @param Request $request
 	 * @return bool
 	 */
-	public static function hasMatch(NetworkRequest $request): bool {
+	public static function hasMatch(Request $request): bool {
 		return $request->endpointBundle === ManticoreEndpoint::Cli;
 	}
 }
