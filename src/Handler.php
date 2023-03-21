@@ -55,11 +55,11 @@ final class Handler extends BaseHandlerWithTableFormatter {
 			$respBody = $resp->getBody();
 			$result = (array)json_decode($respBody, true);
 			if ($tableFormatter === null || !isset($result[0]) || !is_array($result[0])) {
-				return new TaskResult($result);
+				return TaskResult::raw($result);
 			}
 			// Convert JSON response from Manticore to table format
 			if (isset($result[0]['error']) && $result[0]['error'] !== '') {
-				return new TaskResult($tableFormatter->getTable($time0, $data, $total, $result[0]['error']));
+				return TaskResult::raw($tableFormatter->getTable($time0, $data, $total, $result[0]['error']));
 			}
 			if (isset($result[0]['data']) && is_array($result[0]['data'])) {
 				$data = $result[0]['data'];
@@ -67,7 +67,7 @@ final class Handler extends BaseHandlerWithTableFormatter {
 			if (isset($result[0]['total'])) {
 				$total = $result[0]['total'];
 			}
-			return new TaskResult($tableFormatter->getTable($time0, $data, $total));
+			return TaskResult::raw($tableFormatter->getTable($time0, $data, $total));
 		};
 
 		return Task::createInRuntime(
