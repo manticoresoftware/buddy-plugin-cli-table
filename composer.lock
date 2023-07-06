@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d4335704876d52a238b080eaaf01d4d",
+    "content-hash": "d0a13ba62645c3b5dc0ea21da52fb796",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -707,16 +707,16 @@
         },
         {
             "name": "manticoresoftware/buddy-core",
-            "version": "dev-with-tests",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/manticoresoftware/buddy-core.git",
-                "reference": "f6c525c465a5894ad5fafc2af5d53f36e63a04d8"
+                "reference": "1862735de15560b7739b9663ec2b74ef34a984e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/manticoresoftware/buddy-core/zipball/f6c525c465a5894ad5fafc2af5d53f36e63a04d8",
-                "reference": "f6c525c465a5894ad5fafc2af5d53f36e63a04d8",
+                "url": "https://api.github.com/repos/manticoresoftware/buddy-core/zipball/1862735de15560b7739b9663ec2b74ef34a984e7",
+                "reference": "1862735de15560b7739b9663ec2b74ef34a984e7",
                 "shasum": ""
             },
             "require": {
@@ -731,6 +731,7 @@
                 "slevomat/coding-standard": "^8.5",
                 "squizlabs/php_codesniffer": "^3.7"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -751,9 +752,56 @@
             "description": "The Buddy Core to develop your own plugin for Manticore Search",
             "support": {
                 "issues": "https://github.com/manticoresoftware/buddy-core/issues",
-                "source": "https://github.com/manticoresoftware/buddy-core/tree/with-tests"
+                "source": "https://github.com/manticoresoftware/buddy-core/tree/main"
             },
-            "time": "2023-07-05T10:15:27+00:00"
+            "time": "2023-07-05T14:26:33+00:00"
+        },
+        {
+            "name": "manticoresoftware/buddy-plugin-show",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/manticoresoftware/buddy-plugin-show.git",
+                "reference": "4b40d13a4e5cf7c42640ef4d5ba6e6e9acdd9449"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/manticoresoftware/buddy-plugin-show/zipball/4b40d13a4e5cf7c42640ef4d5ba6e6e9acdd9449",
+                "reference": "4b40d13a4e5cf7c42640ef4d5ba6e6e9acdd9449",
+                "shasum": ""
+            },
+            "require": {
+                "manticoresoftware/buddy-core": "dev-main"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.8",
+                "phpunit/phpunit": "^9.5",
+                "slevomat/coding-standard": "^8.5",
+                "squizlabs/php_codesniffer": "^3.7"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Manticoresearch\\Buddy\\Plugin\\Show\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Manticore Software Co. Ltd",
+                    "email": "contact@manticoresearch.com"
+                }
+            ],
+            "description": "The Buddy SHOW plugin",
+            "support": {
+                "issues": "https://github.com/manticoresoftware/buddy-plugin-show/issues",
+                "source": "https://github.com/manticoresoftware/buddy-plugin-show/tree/main"
+            },
+            "time": "2023-07-06T07:04:01+00:00"
         },
         {
             "name": "psr/container",
@@ -4388,7 +4436,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "manticoresoftware/buddy-core": 20
+        "manticoresoftware/buddy-core": 20,
+        "manticoresoftware/buddy-plugin-show": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
