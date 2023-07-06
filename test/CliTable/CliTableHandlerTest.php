@@ -16,10 +16,10 @@ use Manticoresearch\Buddy\Core\ManticoreSearch\Response;
 use Manticoresearch\Buddy\Core\Network\Request;
 use Manticoresearch\Buddy\Core\Plugin\TableFormatter;
 use Manticoresearch\Buddy\Core\Task\Task;
-use Manticoresearch\Buddy\Plugin\Show\Payload;
-use Manticoresearch\Buddy\Plugin\Show\QueriesHandler as Handler;
 use Manticoresearch\Buddy\CoreTest\Trait\TestHTTPServerTrait;
 use Manticoresearch\Buddy\CoreTest\Trait\TestInEnvironmentTrait;
+use Manticoresearch\Buddy\Plugin\Show\Payload;
+use Manticoresearch\Buddy\Plugin\Show\QueriesHandler as Handler;
 use PHPUnit\Framework\TestCase;
 
 class CliTableHandlerTest extends TestCase {
