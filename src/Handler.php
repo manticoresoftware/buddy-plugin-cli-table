@@ -11,7 +11,7 @@
 
 namespace Manticoresearch\Buddy\Plugin\CliTable;
 
-use Manticoresearch\Buddy\Core\ManticoreSearch\Client as HTTPClient;
+use Manticoresearch\Buddy\Core\ManticoreSearch\Client;
 use Manticoresearch\Buddy\Core\Plugin\BaseHandlerWithTableFormatter;
 use Manticoresearch\Buddy\Core\Plugin\TableFormatter;
 use Manticoresearch\Buddy\Core\Task\Task;
@@ -43,11 +43,12 @@ final class Handler extends BaseHandlerWithTableFormatter {
 		$this->manticoreClient->setPath($this->payload->path);
 		// We run in a thread anyway but in case if we need blocking
 		// We just waiting for a thread to be done
-		$taskFn = static function (
-			Payload $payload,
-			HTTPClient $manticoreClient,
-			?TableFormatter $tableFormatter
-		): TaskResult {
+		$taskFn = static function (string $args): TaskResult {
+			/** @var Payload $payload */
+			/** @var Client $manticoreClient */
+			/** @var ?TableFormatter $tableFormatter */
+			/** @phpstan-ignore-next-line */
+			[$payload, $manticoreClient, $tableFormatter] = unserialize($args);
 			$time0 = hrtime(true);
 			$resp = $manticoreClient->sendRequest($payload->query, null, true);
 			$data = null;
@@ -73,7 +74,7 @@ final class Handler extends BaseHandlerWithTableFormatter {
 		return Task::createInRuntime(
 			$runtime,
 			$taskFn,
-			[$this->payload, $this->manticoreClient, $this->tableFormatter]
+			[serialize([$this->payload, $this->manticoreClient, $this->tableFormatter])]
 		)->run();
 	}
 }
