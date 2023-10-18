@@ -15,7 +15,6 @@ use Manticoresearch\Buddy\Core\ManticoreSearch\RequestFormat;
 use Manticoresearch\Buddy\Core\ManticoreSearch\Response;
 use Manticoresearch\Buddy\Core\Network\Request;
 use Manticoresearch\Buddy\Core\Plugin\TableFormatter;
-use Manticoresearch\Buddy\Core\Task\Task;
 use Manticoresearch\Buddy\CoreTest\Trait\TestHTTPServerTrait;
 use Manticoresearch\Buddy\CoreTest\Trait\TestInEnvironmentTrait;
 use Manticoresearch\Buddy\Plugin\Show\Payload;
@@ -62,8 +61,7 @@ class CliTableHandlerTest extends TestCase {
 		$refCls = new ReflectionClass($handler);
 		$refCls->getProperty('manticoreClient')->setValue($handler, $manticoreClient);
 		$refCls->getProperty('tableFormatter')->setValue($handler, $tableFormatter);
-		self::setTaskRuntime();
-		$task = $handler->run(Task::createRuntime());
+		$task = $handler->run();
 		$task->wait();
 		$this->assertEquals(true, $task->isSucceed());
 		$result = $task->getResult()->getStruct();

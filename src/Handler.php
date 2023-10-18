@@ -17,7 +17,6 @@ use Manticoresearch\Buddy\Core\Plugin\TableFormatter;
 use Manticoresearch\Buddy\Core\Task\Task;
 use Manticoresearch\Buddy\Core\Task\TaskResult;
 use RuntimeException;
-use parallel\Runtime;
 
 /**
  * This is the class to return response to the '/cli' endpoint in table format
@@ -39,16 +38,11 @@ final class Handler extends BaseHandlerWithTableFormatter {
 	 * @return Task
 	 * @throws RuntimeException
 	 */
-	public function run(Runtime $runtime): Task {
+	public function run(): Task {
 		$this->manticoreClient->setPath($this->payload->path);
 		// We run in a thread anyway but in case if we need blocking
 		// We just waiting for a thread to be done
-		$taskFn = static function (string $args): TaskResult {
-			/** @var Payload $payload */
-			/** @var Client $manticoreClient */
-			/** @var ?TableFormatter $tableFormatter */
-			/** @phpstan-ignore-next-line */
-			[$payload, $manticoreClient, $tableFormatter] = unserialize($args);
+		$taskFn = static function (Payload $payload, Client $manticoreClient, ?TableFormatter $tableFormatter): TaskResult {
 			$time0 = hrtime(true);
 			$resp = $manticoreClient->sendRequest($payload->query, null, true);
 			$data = null;
@@ -71,10 +65,9 @@ final class Handler extends BaseHandlerWithTableFormatter {
 			return TaskResult::raw($tableFormatter->getTable($time0, $data, $total));
 		};
 
-		return Task::createInRuntime(
-			$runtime,
+		return Task::create(
 			$taskFn,
-			[serialize([$this->payload, $this->manticoreClient, $this->tableFormatter])]
+			[$this->payload, $this->manticoreClient, $this->tableFormatter]
 		)->run();
 	}
 }
