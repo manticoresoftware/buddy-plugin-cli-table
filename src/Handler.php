@@ -39,12 +39,15 @@ final class Handler extends BaseHandlerWithTableFormatter {
 	 * @throws RuntimeException
 	 */
 	public function run(): Task {
-		$this->manticoreClient->setPath($this->payload->path);
 		// We run in a thread anyway but in case if we need blocking
 		// We just waiting for a thread to be done
 		$taskFn = static function (Payload $payload, Client $manticoreClient, ?TableFormatter $tableFormatter): TaskResult {
 			$time0 = hrtime(true);
-			$resp = $manticoreClient->sendRequest($payload->query, null, true);
+			$resp = $manticoreClient->sendRequest(
+				$payload->query,
+				$payload->path,
+				disableAgentHeader: true
+			);
 			$data = null;
 			$total = -1;
 			$respBody = $resp->getBody();
